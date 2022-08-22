@@ -1,0 +1,139 @@
+# ServerProperties
+server:
+  port: 8080
+  servlet:
+    context-path: ''
+
+spring:
+
+  # ThymeleafProperties
+  thymeleaf:
+    cache: false
+
+  # DataSourceProperties
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: # jdbc:mysql://:3306/community?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
+    username:
+    password:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+
+  # RedisProperties
+  redis:
+    database: 6
+    host:
+    port: 6379
+    password:
+
+  # MailProperties
+  mail:
+    host: smtp.sina.cn
+    port: 465
+    username: # ...@sina.cn 邮箱
+    password: # 邮箱密码
+    protocol: smtps  # 协议
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+
+  # KafkaProperties
+  kafka:
+    bootstrap-servers: # kafka 地址
+    consumer:
+      group-id: community-consumer-group  # config/consumer.properties
+      enable-auto-commit: true  # 是否自动提交消费消费者偏移量（消费者是按偏移量读取数据）表示要记录偏移量
+      auto-commit-interval: 3000  # 自动提交的频率
+
+  # ElasticsearchProperties
+  data:
+    elasticsearch:
+      cluster-name: community
+      cluster-nodes:
+
+  # TaskExecutionProperties
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 15
+        queue-capacity: 100
+    # TaskSchedulingProperties
+    scheduling:
+      pool:
+        size: 5
+
+  quartz:
+    job-store-type: jdbc
+    scheduler-name: communityScheduler
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+          jobStore:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            isClustered: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 5
+
+# MybatisProperties
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    useGeneratedKeys: true
+    mapUnderscoreToCamelCase: true
+  type-aliases-package: cn.letout.community.entity
+
+# logger
+logging:
+  level:
+    cn:
+      letout:
+        community: debug
+
+# community
+community:
+  path:
+    domain: http://localhost:8080
+    upload: /
+
+# wk (wkhtmltopdf)
+wk:
+  image:
+    command: # wkhtmltopdf 命令地址 /wkhtmltopdf/bin/wkhtmltoimage
+    storage: # 生产图片地址
+
+# qiniu
+qiniu:
+  key:
+    access:
+    secret:
+  bucket:
+    header:
+      url:
+      name:
+    share:
+      url:
+      name:
+
+# caffeine
+caffeine:
+  posts:
+    max-size: 15
+    expire-seconds: 180
+
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: *
+        exclude: info,caches
